@@ -127,6 +127,14 @@ export function Footer() {
                     >
                         Estrella Medical Centers →
                     </a>
+                    <a
+                        href="https://app.estrellamedicalplans.com/login"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-4 py-2 bg-accent-base text-primary-dark text-sm font-bold rounded-lg hover:bg-accent-light transition-colors"
+                    >
+                        {language === 'es' ? 'Portal de Afiliados' : 'Affiliate Portal'}
+                    </a>
                 </div>
 
                 <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
