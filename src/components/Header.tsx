@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react';
-import { Menu, X, Globe, MapPin } from 'lucide-react';
+import { Menu, X, Globe, MapPin, ExternalLink } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from './ui/Button';
 import { useLanguage } from '../context/LanguageContext';
 
-const MAIN_SITE_URL = 'https://estrella-medical-centers.vercel.app';
+const CLINIC_WEBSITE_URL = 'https://estrellamedicalcenters.com';
 
 export function Header() {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const { language, toggleLanguage, t } = useLanguage();
+    const { language, toggleLanguage } = useLanguage();
     const location = useLocation();
     const isHomePage = location.pathname === '/';
 
@@ -58,47 +58,40 @@ export function Header() {
 
                     {/* Desktop Navigation */}
                     <nav className="hidden lg:flex items-center gap-6">
-                        {/* 1. About Estrella Medical Centers */}
+                        {/* 1. Benefits & How It Works */}
                         <a
-                            href={MAIN_SITE_URL}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-sm font-semibold px-4 py-2 rounded-full bg-gradient-to-r from-accent-light to-accent-dark text-white hover:shadow-lg hover:scale-105 transition-all"
-                        >
-                            {language === 'es' ? 'Sobre Estrella Medical Centers' : 'About Estrella Medical Centers'}
-                        </a>
-
-                        {/* 2. Plan Benefits */}
-                        <a
-                            href={getHref('#features')}
+                            href="#benefits"
                             className="text-sm font-medium text-gray-700 hover:text-primary-base transition-colors py-2"
                         >
-                            {language === 'es' ? 'Beneficios del Plan' : 'Plan Benefits'}
+                            {language === 'es' ? 'Beneficios' : 'Benefits'}
+                        </a>
+
+                        {/* 2. The Plan */}
+                        <a
+                            href="#features"
+                            className="text-sm font-medium text-gray-700 hover:text-primary-base transition-colors py-2"
+                        >
+                            {language === 'es' ? 'El Plan' : 'The Plan'}
                         </a>
 
                         {/* 3. Locations */}
                         <a
-                            href={getHref('#locations')}
+                            href="#locations"
                             className="text-sm font-medium text-gray-700 hover:text-primary-base transition-colors py-2 flex items-center gap-1.5"
                         >
                             <MapPin size={16} />
                             {language === 'es' ? 'Ubicaciones' : 'Locations'}
                         </a>
 
-                        {/* 4. About Us */}
+                        {/* 4. Visit Clinic Website */}
                         <a
-                            href={getHref('#about')}
-                            className="text-sm font-medium text-gray-700 hover:text-primary-base transition-colors py-2"
+                            href={CLINIC_WEBSITE_URL}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sm font-medium text-gray-700 hover:text-primary-base transition-colors py-2 flex items-center gap-1.5"
                         >
-                            {t('nav.about')}
-                        </a>
-
-                        {/* 5. Contact */}
-                        <a
-                            href={getHref('#contact')}
-                            className="text-sm font-medium text-gray-700 hover:text-primary-base transition-colors py-2"
-                        >
-                            {t('nav.contact')}
+                            {language === 'es' ? 'Visitar Clínica' : 'Visit Clinic'}
+                            <ExternalLink size={14} />
                         </a>
                     </nav>
 
@@ -112,9 +105,9 @@ export function Header() {
                                 {language === 'es' ? 'EN' : 'ES'}
                             </span>
                         </button>
-                        <a href={getHref('#enrollment')}>
+                        <a href={getHref('#affiliate-form')}>
                             <Button variant="primary">
-                                {t('nav.schedule')}
+                                {language === 'es' ? 'Ser Afiliado' : 'Become an Affiliate'}
                             </Button>
                         </a>
                     </div>
@@ -166,35 +159,33 @@ export function Header() {
                 {/* Navigation Links */}
                 <nav className="flex-1 overflow-y-auto py-6 px-6">
                     <div className="space-y-2">
-                        {/* 1. About Estrella Medical Centers */}
+                        {/* 1. Benefits */}
                         <a
-                            href={MAIN_SITE_URL}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            onClick={() => setIsMobileMenuOpen(false)}
-                            className="flex items-center gap-3 px-4 py-3 rounded-xl bg-accent-base/20 text-accent-light font-semibold text-sm hover:bg-accent-base/30 transition-colors"
-                        >
-                            <div className="w-8 h-8 rounded-lg bg-accent-base/30 flex items-center justify-center">
-                                <span className="text-xs">★</span>
-                            </div>
-                            {language === 'es' ? 'Sobre Estrella Medical Centers' : 'About Estrella Medical Centers'}
-                        </a>
-
-                        {/* 2. Plan Benefits */}
-                        <a
-                            href={getHref('#features')}
+                            href="#benefits"
                             onClick={() => setIsMobileMenuOpen(false)}
                             className="flex items-center gap-3 px-4 py-3 rounded-xl text-white/90 font-medium text-sm hover:bg-white/10 transition-colors"
                         >
                             <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
                                 <span className="text-xs">✓</span>
                             </div>
-                            {language === 'es' ? 'Beneficios del Plan' : 'Plan Benefits'}
+                            {language === 'es' ? 'Beneficios' : 'Benefits'}
+                        </a>
+
+                        {/* 2. The Plan */}
+                        <a
+                            href="#features"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="flex items-center gap-3 px-4 py-3 rounded-xl text-white/90 font-medium text-sm hover:bg-white/10 transition-colors"
+                        >
+                            <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
+                                <span className="text-xs">📋</span>
+                            </div>
+                            {language === 'es' ? 'El Plan' : 'The Plan'}
                         </a>
 
                         {/* 3. Locations */}
                         <a
-                            href={getHref('#locations')}
+                            href="#locations"
                             onClick={() => setIsMobileMenuOpen(false)}
                             className="flex items-center gap-3 px-4 py-3 rounded-xl text-white/90 font-medium text-sm hover:bg-white/10 transition-colors"
                         >
@@ -204,28 +195,17 @@ export function Header() {
                             {language === 'es' ? 'Ubicaciones' : 'Locations'}
                         </a>
 
-                        {/* 4. About Us */}
+                        {/* 4. Visit Clinic */}
                         <a
-                            href={getHref('#about')}
-                            onClick={() => setIsMobileMenuOpen(false)}
+                            href={CLINIC_WEBSITE_URL}
+                            target="_blank"
+                            rel="noopener noreferrer"
                             className="flex items-center gap-3 px-4 py-3 rounded-xl text-white/90 font-medium text-sm hover:bg-white/10 transition-colors"
                         >
                             <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
-                                <span className="text-xs">ℹ</span>
+                                <ExternalLink size={14} />
                             </div>
-                            {t('nav.about')}
-                        </a>
-
-                        {/* 5. Contact */}
-                        <a
-                            href={getHref('#contact')}
-                            onClick={() => setIsMobileMenuOpen(false)}
-                            className="flex items-center gap-3 px-4 py-3 rounded-xl text-white/90 font-medium text-sm hover:bg-white/10 transition-colors"
-                        >
-                            <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
-                                <span className="text-xs">✉</span>
-                            </div>
-                            {t('nav.contact')}
+                            {language === 'es' ? 'Visitar Clínica' : 'Visit Clinic'}
                         </a>
                     </div>
 
@@ -249,9 +229,9 @@ export function Header() {
 
                 {/* Bottom CTA */}
                 <div className="p-6 border-t border-white/10 bg-black/10">
-                    <a href={getHref('#enrollment')} onClick={() => setIsMobileMenuOpen(false)} className="block">
+                    <a href={getHref('#affiliate-form')} onClick={() => setIsMobileMenuOpen(false)} className="block">
                         <Button variant="accent" fullWidth size="lg" className="shadow-lg">
-                            {t('nav.schedule')}
+                            {language === 'es' ? 'Ser Afiliado' : 'Become an Affiliate'}
                         </Button>
                     </a>
                     <p className="text-center text-white/50 text-xs mt-3">
