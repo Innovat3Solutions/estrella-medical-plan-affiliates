@@ -1,0 +1,405 @@
+import { useState, useRef, useEffect } from 'react';
+import { Stethoscope, Video, HeartPulse, Activity, Eye, Smile, ChevronRight, CheckCircle2 } from 'lucide-react';
+import { Button } from './ui/Button';
+import { useLanguage } from '../context/LanguageContext';
+
+const PAYMENT_LINK = 'https://link.fastpaydirect.com/payment-link/69a0bf797819e367cb917544';
+
+export function Features() {
+    const [activeIndex, setActiveIndex] = useState(0);
+    const { t } = useLanguage();
+
+    const features = [
+        {
+            id: 'primary-care',
+            icon: Stethoscope,
+            title: t('feature.primaryCare.title'),
+            description: t('feature.primaryCare.desc'),
+            details: [
+                "Consultas médicas sin límite",
+                "Manejo de enfermedades crónicas",
+                "Exámenes físicos anuales",
+                "Coordinación de cuidado integral"
+            ],
+            detailsEn: [
+                "Unlimited medical consultations",
+                "Chronic disease management",
+                "Annual physical exams",
+                "Comprehensive care coordination"
+            ],
+            image: "/assets/images/nside-a-south-florida-primary-care.webp"
+        },
+        {
+            id: 'telemedicine',
+            icon: Video,
+            title: t('feature.telemedicine.title'),
+            description: t('feature.telemedicine.desc'),
+            details: [
+                "Acceso inmediato a médicos",
+                "Consultas por video o teléfono",
+                "Recetas electrónicas",
+                "Disponible en cualquier momento"
+            ],
+            detailsEn: [
+                "Immediate access to doctors",
+                "Video or phone consultations",
+                "Electronic prescriptions",
+                "Available anytime"
+            ],
+            image: "/assets/images/candid-moment-inside-modern-south-florida.webp"
+        },
+        {
+            id: 'specialists',
+            icon: HeartPulse,
+            title: t('feature.specialists.title'),
+            description: t('feature.specialists.desc'),
+            details: [
+                "Más de 15 especialidades",
+                "Tarifas preferenciales",
+                "Citas rápidas disponibles",
+                "Red de especialistas certificados"
+            ],
+            detailsEn: [
+                "Over 15 specialties",
+                "Preferential rates",
+                "Quick appointments available",
+                "Network of certified specialists"
+            ],
+            image: "/assets/images/cardiologist-using-stethoscope-to-examine.webp"
+        },
+        {
+            id: 'labs',
+            icon: Activity,
+            title: t('feature.labs.title'),
+            description: t('feature.labs.desc'),
+            details: [
+                "Análisis de sangre completos",
+                "Panel metabólico básico",
+                "Pruebas de colesterol",
+                "Resultados rápidos"
+            ],
+            detailsEn: [
+                "Complete blood analysis",
+                "Basic metabolic panel",
+                "Cholesterol tests",
+                "Fast results"
+            ],
+            image: "/assets/images/lab-technician-drawing-blood.webp"
+        },
+        {
+            id: 'dental',
+            icon: Smile,
+            title: t('feature.dental.title'),
+            description: t('feature.dental.desc'),
+            details: [
+                "2 limpiezas anuales incluidas",
+                "Radiografías dentales",
+                "Descuentos en tratamientos",
+                "Odontología preventiva"
+            ],
+            detailsEn: [
+                "2 annual cleanings included",
+                "Dental X-rays",
+                "Treatment discounts",
+                "Preventive dentistry"
+            ],
+            image: "/assets/images/dentist-performing-routine-dental-checkup.webp"
+        },
+        {
+            id: 'vision',
+            icon: Eye,
+            title: t('feature.vision.title'),
+            description: t('feature.vision.desc'),
+            details: [
+                "Examen de vista anual",
+                "Un par de lentes básicos",
+                "Descuentos en monturas",
+                "Detección de enfermedades oculares"
+            ],
+            detailsEn: [
+                "Annual eye exam",
+                "One pair of basic lenses",
+                "Frame discounts",
+                "Eye disease detection"
+            ],
+            image: "/assets/images/female-optometrist-adjusting-phoropter.webp"
+        }
+    ];
+
+    const activeFeature = features[activeIndex];
+    const { language } = useLanguage();
+    const currentDetails = language === 'es' ? activeFeature.details : activeFeature.detailsEn;
+    const mobileCarouselRef = useRef<HTMLDivElement>(null);
+    const [mobileActiveIndex, setMobileActiveIndex] = useState(0);
+
+    // Handle scroll to update active indicator on mobile
+    useEffect(() => {
+        const carousel = mobileCarouselRef.current;
+        if (!carousel) return;
+
+        const handleScroll = () => {
+            const scrollLeft = carousel.scrollLeft;
+            const cardWidth = carousel.offsetWidth * 0.8 + 16;
+            const newIndex = Math.round(scrollLeft / cardWidth);
+            setMobileActiveIndex(Math.min(newIndex, features.length - 1));
+        };
+
+        carousel.addEventListener('scroll', handleScroll);
+        return () => carousel.removeEventListener('scroll', handleScroll);
+    }, [features.length]);
+
+    const scrollToFeature = (index: number) => {
+        const carousel = mobileCarouselRef.current;
+        if (!carousel) return;
+        const cardWidth = carousel.offsetWidth * 0.8 + 16;
+        carousel.scrollTo({ left: cardWidth * index, behavior: 'smooth' });
+    };
+
+    return (
+        <section id="features" className="py-16 md:py-24 bg-gray-50 relative overflow-hidden scroll-mt-20">
+            {/* Decorative star accents - hidden on mobile */}
+            <img
+                src="/assets/images/star-accent.webp"
+                alt=""
+                className="absolute top-24 left-8 w-56 opacity-[0.08] pointer-events-none hidden md:block"
+            />
+            <img
+                src="/assets/images/star-accent.webp"
+                alt=""
+                className="absolute bottom-16 right-8 w-44 opacity-[0.06] pointer-events-none rotate-12 hidden md:block"
+            />
+            <div className="container mx-auto px-4 lg:px-8 relative z-10">
+                {/* Section Header */}
+                <div className="text-center max-w-3xl mx-auto mb-8 md:mb-16">
+                    <h2 className="text-primary-base font-semibold tracking-wide uppercase text-xs sm:text-sm md:text-base mb-2 md:mb-3">
+                        {t('features.badge')}
+                    </h2>
+                    <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4 md:mb-6">
+                        {t('features.title')}
+                    </h3>
+                    <p className="text-sm sm:text-base md:text-lg text-gray-600 px-4">
+                        {t('features.subtitle')}
+                    </p>
+                </div>
+
+                {/* Mobile Carousel View */}
+                <div className="lg:hidden">
+                    <div
+                        ref={mobileCarouselRef}
+                        className="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-4 -mx-4 px-4"
+                    >
+                        {features.map((feature) => {
+                            const Icon = feature.icon;
+                            const details = language === 'es' ? feature.details : feature.detailsEn;
+                            return (
+                                <div
+                                    key={feature.id}
+                                    className="snap-start flex-shrink-0 w-[80%] sm:w-[70%] bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden"
+                                >
+                                    {/* Card Image */}
+                                    <div className="relative h-40 overflow-hidden">
+                                        <img
+                                            src={feature.image}
+                                            alt={feature.title}
+                                            className="w-full h-full object-cover"
+                                        />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                                        <div className="absolute bottom-0 left-0 right-0 p-4">
+                                            <div className="flex items-center gap-2">
+                                                <div className="w-8 h-8 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                                                    <Icon size={16} className="text-white" />
+                                                </div>
+                                                <h4 className="text-lg font-bold text-white">
+                                                    {feature.title}
+                                                </h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {/* Card Content */}
+                                    <div className="p-4">
+                                        <p className="text-gray-600 text-sm leading-relaxed mb-3 line-clamp-2">
+                                            {feature.description}
+                                        </p>
+                                        <div className="space-y-2 mb-4">
+                                            {details.slice(0, 3).map((detail, i) => (
+                                                <div key={i} className="flex items-start gap-2">
+                                                    <CheckCircle2 size={14} className="text-green-500 mt-0.5 flex-shrink-0" />
+                                                    <span className="text-gray-700 text-xs font-medium">{detail}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                        <a href={PAYMENT_LINK} className="block">
+                                            <Button variant="primary" fullWidth size="md">
+                                                {t('features.enrollNow')}
+                                            </Button>
+                                        </a>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+
+                    {/* Mobile Carousel Indicators */}
+                    <div className="flex justify-center gap-2 mt-4">
+                        {features.map((_, index) => (
+                            <button
+                                key={index}
+                                onClick={() => scrollToFeature(index)}
+                                className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                                    mobileActiveIndex === index
+                                        ? 'bg-primary-base w-6'
+                                        : 'bg-gray-300'
+                                }`}
+                                aria-label={`Go to feature ${index + 1}`}
+                            />
+                        ))}
+                    </div>
+                </div>
+
+                {/* Desktop Interactive Feature Display */}
+                <div className="hidden lg:block bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
+                    <div className="grid lg:grid-cols-12">
+
+                        {/* Left Menu */}
+                        <div className="lg:col-span-4 border-r border-gray-100">
+                            <div className="p-6 border-b border-gray-100 bg-gray-50/50">
+                                <h4 className="font-semibold text-gray-900">{t('features.servicesIncluded')}</h4>
+                                <p className="text-sm text-gray-500">{t('features.selectDetails')}</p>
+                            </div>
+                            <nav className="divide-y divide-gray-100">
+                                {features.map((feature, index) => {
+                                    const Icon = feature.icon;
+                                    const isActive = index === activeIndex;
+
+                                    return (
+                                        <button
+                                            key={feature.id}
+                                            onClick={() => setActiveIndex(index)}
+                                            className={`w-full flex items-center gap-4 p-5 text-left transition-all duration-300 group ${
+                                                isActive
+                                                    ? 'bg-primary-base text-white'
+                                                    : 'hover:bg-gray-50 text-gray-700 hover:text-primary-base'
+                                            }`}
+                                        >
+                                            <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors ${
+                                                isActive
+                                                    ? 'bg-white/20'
+                                                    : 'bg-primary-light/10 group-hover:bg-primary-light/20'
+                                            }`}>
+                                                <Icon
+                                                    size={24}
+                                                    className={isActive ? 'text-white' : 'text-primary-base'}
+                                                />
+                                            </div>
+                                            <div className="flex-1 min-w-0">
+                                                <h5 className={`font-semibold truncate ${
+                                                    isActive ? 'text-white' : 'text-gray-900'
+                                                }`}>
+                                                    {feature.title}
+                                                </h5>
+                                                <p className={`text-sm truncate ${
+                                                    isActive ? 'text-white/70' : 'text-gray-500'
+                                                }`}>
+                                                    {feature.description.slice(0, 40)}...
+                                                </p>
+                                            </div>
+                                            <ChevronRight
+                                                size={20}
+                                                className={`flex-shrink-0 transition-transform ${
+                                                    isActive
+                                                        ? 'text-white translate-x-1'
+                                                        : 'text-gray-400 group-hover:translate-x-1'
+                                                }`}
+                                            />
+                                        </button>
+                                    );
+                                })}
+                            </nav>
+                        </div>
+
+                        {/* Right Content - Image and Details */}
+                        <div className="lg:col-span-8 flex flex-col">
+                            {/* Image Section - Square aspect ratio */}
+                            <div className="relative aspect-square max-h-[400px] overflow-hidden bg-gray-100">
+                                <img
+                                    key={activeFeature.id}
+                                    src={activeFeature.image}
+                                    alt={activeFeature.title}
+                                    className="w-full h-full object-cover object-center transition-opacity duration-500 animate-fade-in"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+                                <div className="absolute bottom-0 left-0 right-0 p-6">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                                            <activeFeature.icon size={24} className="text-white" />
+                                        </div>
+                                        <h4 className="text-2xl font-bold text-white">
+                                            {activeFeature.title}
+                                        </h4>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Details Section */}
+                            <div className="flex-1 p-8">
+                                <p className="text-gray-600 text-lg leading-relaxed mb-6">
+                                    {activeFeature.description}
+                                </p>
+
+                                <div className="grid sm:grid-cols-2 gap-4 mb-8">
+                                    {currentDetails.map((detail, i) => (
+                                        <div key={i} className="flex items-start gap-3">
+                                            <div className="mt-0.5 rounded-full p-1 bg-green-50 text-green-500 flex-shrink-0">
+                                                <CheckCircle2 size={16} />
+                                            </div>
+                                            <span className="text-gray-700 font-medium text-sm">
+                                                {detail}
+                                            </span>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                <div className="flex flex-wrap gap-4">
+                                    <a href={PAYMENT_LINK}>
+                                        <Button variant="primary" size="lg">
+                                            {t('features.enrollNow')}
+                                        </Button>
+                                    </a>
+                                    <a href={`#${activeFeature.id}`}>
+                                        <Button variant="outline" size="lg">
+                                            {t('features.moreInfo')}
+                                        </Button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* CTA Card */}
+                <div className="mt-10 md:mt-16 text-center bg-white rounded-2xl md:rounded-3xl p-6 sm:p-8 lg:p-12 shadow-md border border-gray-100 relative overflow-hidden max-w-5xl mx-auto">
+                    <div className="absolute -right-24 -top-24 w-64 h-64 bg-accent-light/20 blur-3xl rounded-full hidden md:block" />
+                    <div className="absolute -left-24 -bottom-24 w-64 h-64 bg-primary-light/20 blur-3xl rounded-full hidden md:block" />
+
+                    <div className="relative z-10 grid md:grid-cols-2 gap-6 md:gap-8 items-center text-center md:text-left">
+                        <div>
+                            <h4 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-2 md:mb-4">
+                                {t('features.cta.title')}
+                            </h4>
+                            <p className="text-gray-600 text-sm sm:text-base mb-4 md:mb-0">
+                                {t('features.cta.subtitle')}
+                            </p>
+                        </div>
+                        <div className="flex justify-center md:justify-end">
+                            <a href={PAYMENT_LINK} className="w-full sm:w-auto">
+                                <Button variant="accent" size="lg" className="whitespace-nowrap w-full sm:w-auto">
+                                    {t('features.enrollNow')}
+                                </Button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    );
+}
